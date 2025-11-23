@@ -109,6 +109,15 @@ public class ProfessorService {
         professorRepository.save(professor);
     }
 
+    @Transactional
+    public void deletar(Long id) {
+        Professor professor = professorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Professor", "id", id));
+        Usuario usuario = professor.getUsuario();
+        professorRepository.delete(professor);
+        usuarioRepository.delete(usuario);
+    }
+
     private ProfessorResponse mapToResponse(Professor professor) {
         ProfessorResponse response = new ProfessorResponse();
         response.setId(professor.getId());

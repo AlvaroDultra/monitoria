@@ -30,4 +30,9 @@ export const disciplinaService = {
     const response = await api.patch(`/admin/disciplinas/${id}/ativar`);
     return response.data;
   },
+
+  async deletar(id) {
+    const response = await api.delete(`/admin/disciplinas/${id}`);
+    return response.data;
+  },
 };

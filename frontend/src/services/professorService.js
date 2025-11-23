@@ -30,4 +30,9 @@ export const professorService = {
     const response = await api.patch(`/admin/professores/${id}/ativar`);
     return response.data;
   },
+
+  async deletar(id) {
+    const response = await api.delete(`/admin/professores/${id}`);
+    return response.data;
+  },
 };

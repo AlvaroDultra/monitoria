@@ -58,4 +58,10 @@ public class AdminDisciplinaController {
         disciplinaService.ativar(id);
         return ResponseEntity.ok(new MessageResponse("Disciplina ativada com sucesso"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deletar(@PathVariable Long id) {
+        disciplinaService.deletar(id);
+        return ResponseEntity.ok(new MessageResponse("Disciplina deletada com sucesso"));
+    }
 }

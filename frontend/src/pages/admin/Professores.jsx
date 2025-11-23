@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Power, PowerOff } from 'lucide-react';
+import { Plus, Power, PowerOff, Trash2 } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Table from '../../components/common/Table';
 import Button from '../../components/common/Button';
@@ -72,6 +72,18 @@ const Professores = () => {
     }
   };
 
+  const handleDeletar = async (id, nome) => {
+    if (window.confirm(`Tem certeza que deseja deletar o professor "${nome}"? Esta ação não pode ser desfeita e o usuário também será removido.`)) {
+      try {
+        await professorService.deletar(id);
+        loadData();
+      } catch (error) {
+        console.error('Erro ao deletar professor:', error);
+        alert('Erro ao deletar professor. Ele pode estar vinculado a outras entidades.');
+      }
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setFormData({
@@ -110,17 +122,28 @@ const Professores = () => {
       key: 'actions',
       label: 'Ações',
       render: (_, professor) => (
-        <Button
-          size="sm"
-          variant={professor.ativo ? 'danger' : 'success'}
-          onClick={() => handleToggleStatus(professor)}
-        >
-          {professor.ativo ? (
-            <PowerOff className="w-4 h-4" />
-          ) : (
-            <Power className="w-4 h-4" />
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant={professor.ativo ? 'danger' : 'success'}
+            onClick={() => handleToggleStatus(professor)}
+            title={professor.ativo ? 'Inativar' : 'Ativar'}
+          >
+            {professor.ativo ? (
+              <PowerOff className="w-4 h-4" />
+            ) : (
+              <Power className="w-4 h-4" />
+            )}
+          </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => handleDeletar(professor.id, professor.nomeCompleto)}
+            title="Deletar"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
       ),
     },
   ];

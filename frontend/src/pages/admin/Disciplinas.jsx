@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, PowerOff, Power } from 'lucide-react';
+import { Plus, Edit, PowerOff, Power, Trash2 } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Table from '../../components/common/Table';
 import Button from '../../components/common/Button';
@@ -93,6 +93,18 @@ const Disciplinas = () => {
     }
   };
 
+  const handleDeletar = async (id, nome) => {
+    if (window.confirm(`Tem certeza que deseja deletar a disciplina "${nome}"? Esta ação não pode ser desfeita.`)) {
+      try {
+        await disciplinaService.deletar(id);
+        loadData();
+      } catch (error) {
+        console.error('Erro ao deletar disciplina:', error);
+        alert('Erro ao deletar disciplina. Ela pode estar vinculada a outras entidades.');
+      }
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingDisciplina(null);
@@ -136,6 +148,7 @@ const Disciplinas = () => {
             size="sm"
             variant="outline"
             onClick={() => handleEdit(disciplina)}
+            title="Editar"
           >
             <Edit className="w-4 h-4" />
           </Button>
@@ -143,12 +156,21 @@ const Disciplinas = () => {
             size="sm"
             variant={disciplina.ativo ? 'danger' : 'success'}
             onClick={() => handleToggleStatus(disciplina)}
+            title={disciplina.ativo ? 'Inativar' : 'Ativar'}
           >
             {disciplina.ativo ? (
               <PowerOff className="w-4 h-4" />
             ) : (
               <Power className="w-4 h-4" />
             )}
+          </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => handleDeletar(disciplina.id, disciplina.nome)}
+            title="Deletar"
+          >
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),

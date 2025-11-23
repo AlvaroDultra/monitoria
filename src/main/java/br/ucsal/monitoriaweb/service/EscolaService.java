@@ -81,6 +81,13 @@ public class EscolaService {
         escolaRepository.save(escola);
     }
 
+    @Transactional
+    public void deletar(Long id) {
+        Escola escola = escolaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Escola", "id", id));
+        escolaRepository.delete(escola);
+    }
+
     private EscolaResponse mapToResponse(Escola escola) {
         return new EscolaResponse(
                 escola.getId(),

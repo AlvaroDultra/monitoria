@@ -56,4 +56,10 @@ public class AdminProfessorController {
         professorService.ativar(id);
         return ResponseEntity.ok(new MessageResponse("Professor ativado com sucesso"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deletar(@PathVariable Long id) {
+        professorService.deletar(id);
+        return ResponseEntity.ok(new MessageResponse("Professor deletado com sucesso"));
+    }
 }

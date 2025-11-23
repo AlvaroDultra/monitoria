@@ -64,4 +64,10 @@ public class AdminEscolaController {
         escolaService.ativar(id);
         return ResponseEntity.ok(new MessageResponse("Escola ativada com sucesso"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deletar(@PathVariable Long id) {
+        escolaService.deletar(id);
+        return ResponseEntity.ok(new MessageResponse("Escola deletada com sucesso"));
+    }
 }

@@ -108,6 +108,13 @@ public class DisciplinaService {
         disciplinaRepository.save(disciplina);
     }
 
+    @Transactional
+    public void deletar(Long id) {
+        Disciplina disciplina = disciplinaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Disciplina", "id", id));
+        disciplinaRepository.delete(disciplina);
+    }
+
     private DisciplinaResponse mapToResponse(Disciplina disciplina) {
         DisciplinaResponse response = new DisciplinaResponse();
         response.setId(disciplina.getId());

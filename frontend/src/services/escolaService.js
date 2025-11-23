@@ -35,4 +35,9 @@ export const escolaService = {
     const response = await api.patch(`/admin/escolas/${id}/ativar`);
     return response.data;
   },
+
+  async deletar(id) {
+    const response = await api.delete(`/admin/escolas/${id}`);
+    return response.data;
+  },
 };

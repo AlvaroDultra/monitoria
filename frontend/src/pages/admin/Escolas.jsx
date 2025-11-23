@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Power, PowerOff } from 'lucide-react';
+import { Plus, Edit, Power, PowerOff, Trash2 } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Table from '../../components/common/Table';
 import Button from '../../components/common/Button';
@@ -72,6 +72,18 @@ const Escolas = () => {
     }
   };
 
+  const handleDeletar = async (id, nome) => {
+    if (window.confirm(`Tem certeza que deseja deletar a escola "${nome}"? Esta ação não pode ser desfeita.`)) {
+      try {
+        await escolaService.deletar(id);
+        loadEscolas();
+      } catch (error) {
+        console.error('Erro ao deletar escola:', error);
+        alert('Erro ao deletar escola. Ela pode estar vinculada a outras entidades.');
+      }
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingEscola(null);
@@ -104,6 +116,7 @@ const Escolas = () => {
             size="sm"
             variant="outline"
             onClick={() => handleEdit(escola)}
+            title="Editar"
           >
             <Edit className="w-4 h-4" />
           </Button>
@@ -111,12 +124,21 @@ const Escolas = () => {
             size="sm"
             variant={escola.ativo ? 'danger' : 'success'}
             onClick={() => handleToggleStatus(escola)}
+            title={escola.ativo ? 'Inativar' : 'Ativar'}
           >
             {escola.ativo ? (
               <PowerOff className="w-4 h-4" />
             ) : (
               <Power className="w-4 h-4" />
             )}
+          </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => handleDeletar(escola.id, escola.nome)}
+            title="Deletar"
+          >
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),
