@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, PowerOff } from 'lucide-react';
+import { Plus, Edit, PowerOff, Power } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Table from '../../components/common/Table';
 import Button from '../../components/common/Button';
@@ -80,12 +80,16 @@ const Disciplinas = () => {
     setIsModalOpen(true);
   };
 
-  const handleInativar = async (id) => {
+  const handleToggleStatus = async (disciplina) => {
     try {
-      await disciplinaService.inativar(id);
+      if (disciplina.ativo) {
+        await disciplinaService.inativar(disciplina.id);
+      } else {
+        await disciplinaService.ativar(disciplina.id);
+      }
       loadData();
     } catch (error) {
-      console.error('Erro ao inativar disciplina:', error);
+      console.error('Erro ao alterar status da disciplina:', error);
     }
   };
 
@@ -135,15 +139,17 @@ const Disciplinas = () => {
           >
             <Edit className="w-4 h-4" />
           </Button>
-          {disciplina.ativo && (
-            <Button
-              size="sm"
-              variant="danger"
-              onClick={() => handleInativar(disciplina.id)}
-            >
+          <Button
+            size="sm"
+            variant={disciplina.ativo ? 'danger' : 'success'}
+            onClick={() => handleToggleStatus(disciplina)}
+          >
+            {disciplina.ativo ? (
               <PowerOff className="w-4 h-4" />
-            </Button>
-          )}
+            ) : (
+              <Power className="w-4 h-4" />
+            )}
+          </Button>
         </div>
       ),
     },

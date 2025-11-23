@@ -25,4 +25,9 @@ export const disciplinaService = {
     const response = await api.patch(`/admin/disciplinas/${id}/inativar`);
     return response.data;
   },
+
+  async ativar(id) {
+    const response = await api.patch(`/admin/disciplinas/${id}/ativar`);
+    return response.data;
+  },
 };

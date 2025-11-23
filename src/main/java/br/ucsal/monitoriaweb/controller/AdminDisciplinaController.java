@@ -52,4 +52,10 @@ public class AdminDisciplinaController {
         disciplinaService.inativar(id);
         return ResponseEntity.ok(new MessageResponse("Disciplina inativada com sucesso"));
     }
+
+    @PatchMapping("/{id}/ativar")
+    public ResponseEntity<MessageResponse> ativar(@PathVariable Long id) {
+        disciplinaService.ativar(id);
+        return ResponseEntity.ok(new MessageResponse("Disciplina ativada com sucesso"));
+    }
 }

@@ -100,6 +100,14 @@ public class DisciplinaService {
         disciplinaRepository.save(disciplina);
     }
 
+    @Transactional
+    public void ativar(Long id) {
+        Disciplina disciplina = disciplinaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Disciplina", "id", id));
+        disciplina.setAtivo(true);
+        disciplinaRepository.save(disciplina);
+    }
+
     private DisciplinaResponse mapToResponse(Disciplina disciplina) {
         DisciplinaResponse response = new DisciplinaResponse();
         response.setId(disciplina.getId());
