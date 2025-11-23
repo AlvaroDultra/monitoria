@@ -1,0 +1,381 @@
+### MonitoriaWeb API - Testes de Endpoints
+### Base URL: http://localhost:8080/api
+
+### Variáveis
+@baseUrl = http://localhost:8080/api
+@adminToken = {{login-admin.response.body.token}}
+@professorToken = {{login-professor.response.body.token}}
+
+################################################################################
+### 1. AUTENTICAÇÃO
+################################################################################
+
+### 1.1 Login Admin
+# @name login-admin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 1.2 Login Professor
+# @name login-professor
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "professor",
+  "password": "prof123"
+}
+
+################################################################################
+### 2. ADMIN - ESCOLAS (7 endpoints)
+################################################################################
+
+### 2.1 Criar Escola
+# @name criar-escola
+POST {{baseUrl}}/admin/escolas
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nome": "Escola Teste",
+  "cnpj": "12345678000190",
+  "endereco": "Rua Teste, 123",
+  "telefone": "71987654321",
+  "email": "escola@teste.com"
+}
+
+### 2.2 Listar Todas as Escolas
+GET {{baseUrl}}/admin/escolas
+Authorization: Bearer {{adminToken}}
+
+### 2.3 Listar Escolas Ativas
+GET {{baseUrl}}/admin/escolas/ativas
+Authorization: Bearer {{adminToken}}
+
+### 2.4 Buscar Escola por ID
+GET {{baseUrl}}/admin/escolas/1
+Authorization: Bearer {{adminToken}}
+
+### 2.5 Atualizar Escola
+PUT {{baseUrl}}/admin/escolas/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nome": "Escola Atualizada",
+  "cnpj": "12345678000190",
+  "endereco": "Rua Atualizada, 456",
+  "telefone": "71987654321",
+  "email": "escola.atualizada@teste.com"
+}
+
+### 2.6 Inativar Escola
+PATCH {{baseUrl}}/admin/escolas/1/inativar
+Authorization: Bearer {{adminToken}}
+
+### 2.7 Ativar Escola
+PATCH {{baseUrl}}/admin/escolas/1/ativar
+Authorization: Bearer {{adminToken}}
+
+################################################################################
+### 3. ADMIN - PROFESSORES (6 endpoints)
+################################################################################
+
+### 3.1 Criar Professor
+# @name criar-professor
+POST {{baseUrl}}/admin/professores
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nome": "Professor Teste",
+  "cpf": "12345678900",
+  "email": "professor.teste@ucsal.br",
+  "telefone": "71987654321",
+  "senha": "senha123",
+  "escolaId": 1
+}
+
+### 3.2 Listar Todos os Professores
+GET {{baseUrl}}/admin/professores
+Authorization: Bearer {{adminToken}}
+
+### 3.3 Listar Professores Ativos
+GET {{baseUrl}}/admin/professores/ativos
+Authorization: Bearer {{adminToken}}
+
+### 3.4 Buscar Professor por ID
+GET {{baseUrl}}/admin/professores/1
+Authorization: Bearer {{adminToken}}
+
+### 3.5 Inativar Professor
+PATCH {{baseUrl}}/admin/professores/1/inativar
+Authorization: Bearer {{adminToken}}
+
+### 3.6 Ativar Professor
+PATCH {{baseUrl}}/admin/professores/1/ativar
+Authorization: Bearer {{adminToken}}
+
+################################################################################
+### 4. ADMIN - DISCIPLINAS (5 endpoints)
+################################################################################
+
+### 4.1 Criar Disciplina
+# @name criar-disciplina
+POST {{baseUrl}}/admin/disciplinas
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nome": "Matemática",
+  "codigo": "MAT101",
+  "cargaHoraria": 60,
+  "escolaId": 1
+}
+
+### 4.2 Listar Todas as Disciplinas
+GET {{baseUrl}}/admin/disciplinas
+Authorization: Bearer {{adminToken}}
+
+### 4.3 Buscar Disciplina por ID
+GET {{baseUrl}}/admin/disciplinas/1
+Authorization: Bearer {{adminToken}}
+
+### 4.4 Atualizar Disciplina
+PUT {{baseUrl}}/admin/disciplinas/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nome": "Matemática Avançada",
+  "codigo": "MAT101",
+  "cargaHoraria": 80,
+  "escolaId": 1
+}
+
+### 4.5 Inativar Disciplina
+PATCH {{baseUrl}}/admin/disciplinas/1/inativar
+Authorization: Bearer {{adminToken}}
+
+################################################################################
+### 5. PROFESSOR - ALUNOS (6 endpoints)
+################################################################################
+
+### 5.1 Criar Aluno
+# @name criar-aluno
+POST {{baseUrl}}/professor/alunos
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "nome": "Aluno Teste",
+  "matricula": "2024001",
+  "email": "aluno@teste.com",
+  "telefone": "71987654321",
+  "disciplinaId": 1
+}
+
+### 5.2 Listar Meus Alunos
+GET {{baseUrl}}/professor/alunos
+Authorization: Bearer {{professorToken}}
+
+### 5.3 Listar Alunos por Disciplina
+GET {{baseUrl}}/professor/alunos/disciplina/1
+Authorization: Bearer {{professorToken}}
+
+### 5.4 Buscar Aluno por ID
+GET {{baseUrl}}/professor/alunos/1
+Authorization: Bearer {{professorToken}}
+
+### 5.5 Atualizar Aluno
+PUT {{baseUrl}}/professor/alunos/1
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "nome": "Aluno Atualizado",
+  "matricula": "2024001",
+  "email": "aluno.atualizado@teste.com",
+  "telefone": "71987654321",
+  "disciplinaId": 1
+}
+
+### 5.6 Inativar Aluno
+PATCH {{baseUrl}}/professor/alunos/1/inativar
+Authorization: Bearer {{professorToken}}
+
+################################################################################
+### 6. PROFESSOR - MONITORIAS (8 endpoints)
+################################################################################
+
+### 6.1 Criar Monitoria
+# @name criar-monitoria
+POST {{baseUrl}}/professor/monitorias
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "disciplinaId": 1,
+  "dataInicio": "2024-01-15",
+  "dataFim": "2024-06-30",
+  "horario": "14:00-16:00",
+  "local": "Sala 101",
+  "descricao": "Monitoria de Matemática"
+}
+
+### 6.2 Listar Minhas Monitorias
+GET {{baseUrl}}/professor/monitorias
+Authorization: Bearer {{professorToken}}
+
+### 6.3 Listar Monitorias em Andamento
+GET {{baseUrl}}/professor/monitorias/em-andamento
+Authorization: Bearer {{professorToken}}
+
+### 6.4 Buscar Monitoria por ID
+GET {{baseUrl}}/professor/monitorias/1
+Authorization: Bearer {{professorToken}}
+
+### 6.5 Atualizar Monitoria
+PUT {{baseUrl}}/professor/monitorias/1
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "disciplinaId": 1,
+  "dataInicio": "2024-01-15",
+  "dataFim": "2024-12-31",
+  "horario": "15:00-17:00",
+  "local": "Sala 102",
+  "descricao": "Monitoria de Matemática Avançada"
+}
+
+### 6.6 Finalizar Monitoria
+PATCH {{baseUrl}}/professor/monitorias/1/finalizar
+Authorization: Bearer {{professorToken}}
+
+### 6.7 Associar Aluno à Monitoria
+POST {{baseUrl}}/professor/monitorias/associar-aluno
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "monitoriaId": 1,
+  "alunoId": 1
+}
+
+### 6.8 Remover Aluno da Monitoria
+DELETE {{baseUrl}}/professor/monitorias/monitor/1
+Authorization: Bearer {{professorToken}}
+
+### 6.9 Contar Alunos na Monitoria
+GET {{baseUrl}}/professor/monitorias/1/quantidade-alunos
+Authorization: Bearer {{professorToken}}
+
+################################################################################
+### 7. PROFESSOR - ASSUNTOS (3 endpoints)
+################################################################################
+
+### 7.1 Registrar Assunto de Monitoria
+# @name registrar-assunto
+POST {{baseUrl}}/professor/assuntos
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "monitoriaId": 1,
+  "descricao": "Funções Quadráticas",
+  "data": "2024-01-20"
+}
+
+### 7.2 Listar Assuntos por Monitoria
+GET {{baseUrl}}/professor/assuntos/monitoria/1
+Authorization: Bearer {{professorToken}}
+
+### 7.3 Excluir Assunto
+DELETE {{baseUrl}}/professor/assuntos/1
+Authorization: Bearer {{professorToken}}
+
+################################################################################
+### 8. PROFESSOR - FREQUÊNCIAS (2 endpoints)
+################################################################################
+
+### 8.1 Registrar Frequência
+# @name registrar-frequencia
+POST {{baseUrl}}/professor/frequencias
+Content-Type: application/json
+Authorization: Bearer {{professorToken}}
+
+{
+  "monitorId": 1,
+  "data": "2024-01-20",
+  "presente": true
+}
+
+### 8.2 Atualizar Frequência
+PATCH {{baseUrl}}/professor/frequencias/1?presente=false
+Authorization: Bearer {{professorToken}}
+
+################################################################################
+### RESUMO DOS ENDPOINTS
+################################################################################
+
+# Total de endpoints: 38
+#
+# 1. Autenticação: 1 endpoint
+#    - POST /auth/login
+#
+# 2. Admin - Escolas: 7 endpoints
+#    - POST /admin/escolas
+#    - GET /admin/escolas
+#    - GET /admin/escolas/ativas
+#    - GET /admin/escolas/{id}
+#    - PUT /admin/escolas/{id}
+#    - PATCH /admin/escolas/{id}/inativar
+#    - PATCH /admin/escolas/{id}/ativar
+#
+# 3. Admin - Professores: 6 endpoints
+#    - POST /admin/professores
+#    - GET /admin/professores
+#    - GET /admin/professores/ativos
+#    - GET /admin/professores/{id}
+#    - PATCH /admin/professores/{id}/inativar
+#    - PATCH /admin/professores/{id}/ativar
+#
+# 4. Admin - Disciplinas: 5 endpoints
+#    - POST /admin/disciplinas
+#    - GET /admin/disciplinas
+#    - GET /admin/disciplinas/{id}
+#    - PUT /admin/disciplinas/{id}
+#    - PATCH /admin/disciplinas/{id}/inativar
+#
+# 5. Professor - Alunos: 6 endpoints
+#    - POST /professor/alunos
+#    - GET /professor/alunos
+#    - GET /professor/alunos/disciplina/{disciplinaId}
+#    - GET /professor/alunos/{id}
+#    - PUT /professor/alunos/{id}
+#    - PATCH /professor/alunos/{id}/inativar
+#
+# 6. Professor - Monitorias: 9 endpoints
+#    - POST /professor/monitorias
+#    - GET /professor/monitorias
+#    - GET /professor/monitorias/em-andamento
+#    - GET /professor/monitorias/{id}
+#    - PUT /professor/monitorias/{id}
+#    - PATCH /professor/monitorias/{id}/finalizar
+#    - POST /professor/monitorias/associar-aluno
+#    - DELETE /professor/monitorias/monitor/{monitorId}
+#    - GET /professor/monitorias/{id}/quantidade-alunos
+#
+# 7. Professor - Assuntos: 3 endpoints
+#    - POST /professor/assuntos
+#    - GET /professor/assuntos/monitoria/{monitoriaId}
+#    - DELETE /professor/assuntos/{assuntoId}
+#
+# 8. Professor - Frequências: 2 endpoints
+#    - POST /professor/frequencias
+#    - PATCH /professor/frequencias/{frequenciaId}
